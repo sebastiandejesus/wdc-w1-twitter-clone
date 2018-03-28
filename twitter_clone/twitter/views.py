@@ -12,46 +12,32 @@ from .forms import TweetForm
 
 @login_required()
 def logout(request):
-    django_logout(request)
-    return redirect('/')
-
+    # HINT: Logout user (you can use logout() function from Django)
+    # and redirect to root url
+    pass
 
 def home(request, username=None):
-    if not request.user.is_authenticated:
-        if not username or request.method != 'GET':
-            return redirect(settings.LOGIN_URL + '?next=%s' % request.path)
+    # HINT: Redirect to /login url if user is not authenticated
+    # and username wasn't given
+    # === CODE HERE ===
+    #
+    # =================
 
-    user = request.user
-
-    if request.method == 'POST':
-        if username and username != user.username:
-            return HttpResponseForbidden()
-        form = TweetForm(request.POST)
-        if form.is_valid():
-            tweet = form.save(commit=False)
-            tweet.user = request.user
-            tweet.save()
-            # Reset the form
-            form = TweetForm()
-            messages.success(request, 'Tweet Created!')
-    else:
-        form = TweetForm()
-        if username is not None:
-            user = get_object_or_404(get_user_model(), username=username)
-            form = None
+    # HINT 2: Modify code below to have following behavior:
+    # - If request's method is 'GET', show user's feed as before
+    # - If request's method is 'POST', create a Tweet for proper user, using TweetForm
+    user = get_object_or_404(get_user_model(), username=username)
     tweets = Tweet.objects.filter(user=user)
+    form = TweetForm()
     return render(request, 'feed.html', {
-        'form': form,
         'twitter_profile': user,
-        'tweets': tweets
+        'tweets': tweets,
+        'form': form
     })
 
 
 @login_required()
 def delete_tweet(request, tweet_id):
-    tweet = get_object_or_404(Tweet, pk=tweet_id)
-    if tweet.user != request.user:
-        raise PermissionDenied
-    tweet.delete()
-    messages.success(request, 'Tweet successfully deleted')
-    return redirect(request.GET.get('next', '/'))
+    # HINT: Get Tweet based on given tweet_id and delete it
+    # (only if it belongs to authenticated user)
+    pass

@@ -4,9 +4,10 @@ from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
-    url(r'^login', auth_views.login, {'template_name': 'login.html'}),
-    url(r'^logout', views.logout),
-    url(r'^tweet/(?P<tweet_id>\d+)/delete', views.delete_tweet),
+    # HINTS: Add urls for following functionalities:
+    # - Login
+    # - Logout
+    # - Delete tweet (based on given tweet id)
+    # - Root url ('/') to show authenticated user's feed
     url(r'^(?P<username>\w+)$', views.home),
-    url(r'^$', views.home),
 ]
