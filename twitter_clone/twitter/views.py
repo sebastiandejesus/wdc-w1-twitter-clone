@@ -25,14 +25,13 @@ def home(request, username=None):
 
     # HINT 2: Modify code below to have following behavior:
     # - If request's method is 'GET', show user's feed as before
+    #   (you may send TweetForm instance as template context)
     # - If request's method is 'POST', create a Tweet for proper user, using TweetForm
     user = get_object_or_404(get_user_model(), username=username)
     tweets = Tweet.objects.filter(user=user)
-    form = TweetForm()
     return render(request, 'feed.html', {
         'twitter_profile': user,
-        'tweets': tweets,
-        'form': form
+        'tweets': tweets
     })
 
 
