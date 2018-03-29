@@ -45,3 +45,15 @@ _(Note the form to compose a tweet and the delete icons to delete tweets)_
 ### Deleting a tweet
 
 ![image](https://cloud.githubusercontent.com/assets/872296/17901533/36b92212-693a-11e6-9141-9e2f52048011.png)
+
+### Heroku Admin Credentials
+
+User: `jack`
+Password: `jack1234`
+
+
+ev
+evan1234
+
+user1-10
+verysecretpassword
