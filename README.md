@@ -1,5 +1,15 @@
 # Twitter Clone
 
+---
+
+Try this project LIVE: [https://wdc-w1-twitter-clone.herokuapp.com/](https://wdc-w1-twitter-clone.herokuapp.com/)
+
+Login with:
+* username: `userX` (`X` from 1-10)
+* password: `verysecretpassword`
+
+---
+
 This is the first project of our [Web Development with Django career](https://rmotr.com/web-development-django-python-course). It's just a simple twitter clone implemented with Django. One of the main objectives of this project is to bring you up to speed with the process of working with Github and the first Django setup. Also, you'll see the power of Django as you'll be able to build a simple twitter clone in a few hours.
 
 ## Description of the project
