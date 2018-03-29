@@ -7,7 +7,7 @@ This is a simple guide to explain how to setup your Django project. We'll use th
 You'll have to setup a Django project from scratch. The first step is to create your virtualenv and install the dependencies:
 
 ```bash
-$ mkvirtualenv twitter-clone
+$ mkvirtualenv twitter-clone -p /usr/bin/python3
 $ pip install -r requirements.txt
 ```
 
