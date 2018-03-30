@@ -29,6 +29,8 @@ def base_twitter_fixture(client, django_user_model):
     ev = django_user_model.objects.create_user(
         username='evan', email='ev@twitter.com', password='coffee')
 
+    client.login(username=jack.username, password='coffee')
+
     return {
         'jack': jack,
         'ev': ev
