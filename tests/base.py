@@ -1,37 +1,29 @@
 import pytest
-
-# class BaseTwitterCloneTestCase(WebTest):
-#     def setUp(self):
-#         self.jack = User.objects.create_user(
-#             username='jack', email='jack@twitter.com', password='coffee')
-#         self.ev = User.objects.create_user(
-#             username='evan', email='ev@twitter.com', password='coffee')
-#
-#     def get_session_cookie(self, cookie_name='sessionid'):
-#         for cookie in self.app.cookiejar:
-#             if cookie.name == cookie_name:
-#                 return cookie
-#
-#     def clear_session_cookie(self):
-#         sid_cookie = self.get_session_cookie()
-#
-#         if not sid_cookie:
-#             raise AttributeError("No session cookie found")
-#
-#         self.app.cookiejar.clear(
-#             sid_cookie.domain, sid_cookie.path, sid_cookie.name)
+from django_webtest import WebTest
 
 
 @pytest.fixture
-def base_twitter_fixture(client, django_user_model):
+def base_twitter_fixture(django_app, django_user_model):
     jack = django_user_model.objects.create_user(
         username='jack', email='jack@twitter.com', password='coffee')
     ev = django_user_model.objects.create_user(
         username='evan', email='ev@twitter.com', password='coffee')
 
-    client.login(username=jack.username, password='coffee')
-
     return {
+        # 'app': django_app,
         'jack': jack,
         'ev': ev
     }
+
+
+@pytest.fixture
+def base_authenticated_fixture(base_twitter_fixture, django_app):
+    jack = base_twitter_fixture['jack']
+    form = django_app.get('/login').form
+    form['username'] = jack.username
+    form['password'] = 'coffee'
+    resp = form.submit().follow()
+
+    assert resp.status_code, "Couldn't authenticate user"
+
+    return base_twitter_fixture

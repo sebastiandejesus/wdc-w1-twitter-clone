@@ -1,12 +1,14 @@
-from base import base_twitter_fixture
+import pytest
+from base import base_twitter_fixture, base_authenticated_fixture
 
 
-def test_user_browsing_profile_is_ok(base_twitter_fixture, client):
-    index = client.get('/', user=base_twitter_fixture['jack'])
+def test_user_browsing_profile_is_ok(base_authenticated_fixture, django_app):
+    index = django_app.get('/', user=base_authenticated_fixture['jack'])
     assert index.status_code == 200
 
-def test_user_browsing_profile_is_sees_tweet_form(base_twitter_fixture, client):
-    index = client.get('/', user=base_twitter_fixture['jack'])
+
+def test_user_browsing_profile_is_sees_tweet_form(base_authenticated_fixture, django_app):
+    index = django_app.get('/', user=base_authenticated_fixture['jack'])
     assert index.status_code == 200
 
     form = index.form
@@ -18,16 +20,17 @@ def test_user_browsing_profile_is_sees_tweet_form(base_twitter_fixture, client):
     assert content_field.name == 'content'
     assert content_field.value == ''
 
-def test_user_browsing_other_user_doesnt_see_form(base_twitter_fixture, client):
-    index = client.get('/evan', user=base_twitter_fixture['jack'])
+
+def test_user_browsing_other_user_doesnt_see_form(base_authenticated_fixture, django_app):
+    index = django_app.get('/evan', user=base_authenticated_fixture['jack'])
     assert index.status_code == 200
 
     tweet_form = index.html.find('form', class_='tweet-form')
-    # self.assertIsNone(tweet_form)
-    assert tweet_form is not None
+    assert tweet_form is None
 
-def test_user_browsing_own_profile_url_sees_form(base_twitter_fixture, client):
-    index = client.get('/jack', user=base_twitter_fixture['jack'])
+
+def test_user_browsing_own_profile_url_sees_form(base_authenticated_fixture, django_app):
+    index = django_app.get('/jack', user=base_authenticated_fixture['jack'])
     assert index.status_code == 200
 
     form = index.form
