@@ -2,12 +2,7 @@ import pytest
 from base import base_twitter_fixture, base_authenticated_fixture
 
 
-def test_user_browsing_profile_is_ok(base_authenticated_fixture, django_app):
-    index = django_app.get('/', user=base_authenticated_fixture['jack'])
-    assert index.status_code == 200
-
-
-def test_user_browsing_profile_is_sees_tweet_form(base_authenticated_fixture, django_app):
+def test_user_browsing_profile_sees_tweet_form(base_authenticated_fixture, django_app):
     index = django_app.get('/', user=base_authenticated_fixture['jack'])
     assert index.status_code == 200
 
