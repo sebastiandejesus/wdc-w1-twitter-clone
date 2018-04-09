@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Twitter clone</title>
+
+    <!-- styles -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static "styles.css" %}" />
+</head>
+
+<body>
+    <div class="container body-container">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Twitter clone</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                      {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out" aria-hidden="true"></i> Log out</a></li>
+                      {% else %}
+                        <li><a href="{% url 'login' %}"><i class="fa fa-sign-out" aria-hidden="true"></i> Log in</a></li>
+                      {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+          {% if messages %}
+          <div class="row">
+              <div class="col-sm-12 messages">
+                  {% for message in messages %}
+                        <div class="alert  alert-{{ message.tags }}" role="alert">
+                            {{ message }}
+                        </div>
+                  {% endfor %}
+              </div>
+          </div>
+          {% endif %}
+
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+                <div class="row">
+                    <form role="form" class='tweet-form' action="" method="POST">
+                        {% csrf_token %}
+                        {% if error %}
+                        <div class="form-group has-error">
+                            {{ form.tweet }}
+                            <span class="help-block">{{ error }}</span>
+                        </div>
+                        {% else %}
+                        <div class="form-group">
+                            {{ form.tweet }}
+                        </div>
+                        {% endif %}
+                        <button type="submit" class="btn btn-info pull-right">Submit</button>
+                    </form>
+                </div>
+
+                {% if not tweets %}
+                <div class="row tweet-feed">
+                  <p>
+                    <strong>@{{ request.user }}</strong>
+                    hasn't tweeted yet :(
+                  </p>
+                </div>
+                {% else %}
+                {% for tweet in tweets %}
+                <div class="row tweet-feed">
+                    <div class="well well-large tweet-container">
+                        <form id='delete-tweet-form-9' action="/?id={{ tweet.id }}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="close" title="Delete this tweet" name="delete_tweet">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                        </form>
+                        <div>
+                            <strong>@{{ tweet.username }}</strong>
+                            <span class="label label-primary">{{ tweet.post_date }}</span>
+                        </div>
+                        <div class='tweet-content'>{{ tweet.tweet }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+
+    </div>
+</body>
+<!-- scripts -->
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" type="text/javascript" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" type="text/javascript"></script>
+</html>
